@@ -12,20 +12,22 @@
 
     scroller {
         layers = <SCRL>; 
-        input-processors = <&zip_xy_scaler 1 45>, 
-                           <&x_scaler 0 1>,
-                           <&zip_xy_to_scroll_mapper>;
+        input-processors = <&zip_xy_scaler 1 65>, <&x_scaler 0 1>, <&zip_x_scaler 0>, <&to_wheel>;
     };
 };
 
 / { 
+    to_wheel: to_wheel {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        map = <INPUT_REL_X INPUT_REL_HWHEEL>
+            , <INPUT_REL_Y INPUT_REL_WHEEL>;
+    };
+
     x_scaler: x_scaler {
         compatible = "zmk,input-processor-scaler";
         #input-processor-cells = <2>;
-        acceleration-exponent = <0>;
-        delay-ms = <0>;
-        time-to-max-speed-ms = <0>;
-        trigger-period-ms = <0>;
         type = <INPUT_EV_REL>;
         codes = <INPUT_REL_X>;
     };
